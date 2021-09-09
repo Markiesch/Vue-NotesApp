@@ -9,7 +9,7 @@
       <v-btn icon><v-icon>mdi-format-align-right</v-icon></v-btn>
       <v-btn icon><v-icon>mdi-palette</v-icon></v-btn>
       <v-spacer></v-spacer>
-      <v-btn :color="note.favorite ? 'error' : ''" @click="note.favorite = !note.favorite" icon>
+      <v-btn :color="note.favorite ? 'error' : ''" @click="toggleFavorite" icon>
         <v-icon>{{ note.favorite ? "mdi-heart" : "mdi-heart-plus" }}</v-icon>
       </v-btn>
     </v-toolbar>
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { Component, Vue } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+import {Component, Vue} from "vue-property-decorator";
+import {Getter} from "vuex-class";
 import store from "@/store"
 
 @Component({
@@ -47,7 +47,7 @@ export default class Editor extends Vue {
     favorite: false,
     deleted: false,
   }
-  startingNote = { title: "", text: "", };
+  startingNote = { title: "", text: "", favorite: false };
   noteId = null;
   unsavedChanges = false;
   loading = false;
@@ -64,22 +64,25 @@ export default class Editor extends Vue {
     });
   }
 
+  toggleFavorite() {
+    this.note.favorite = !this.note.favorite;
+    this.setUnsavedChanges();
+  }
+
   setUnsavedChanges() {
-    if (this.startingNote.title !== this.note.title || this.startingNote.text !== this.note.text) return this.unsavedChanges = true;
-    this.unsavedChanges = false;
+    this.unsavedChanges = this.note.title !== this.startingNote.title ||
+                          this.note.text !== this.startingNote.text ||
+                          this.note.favorite !== this.startingNote.favorite
   }
 
   created() {
     try {
       const id = parseInt(this.id);
       const note = this.getNoteById(id);
-
-      this.note.title = note.title;
-      this.note.text = note.text;
-      this.noteId = id;
-
-      this.startingNote.title = this.note.title;
-      this.startingNote.text = this.note.text;
+      this.note = note;
+      this.startingNote.title = note.title;
+      this.startingNote.text = note.text;
+      this.startingNote.favorite = note.favorite;
 
       store.dispatch("addRecent", id);
     } catch (err) {
