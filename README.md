@@ -1,6 +1,6 @@
 <div align="center">
     <a>
-        <img src="public/favicon.ico" alt="Logo" width="80" height="80" />
+        <img src="public/logo.png" alt="Logo" width="80" height="80" />
     </a>
     <h1>Vue Notes App</h1>
     <p>A simple notes web application made with VueJS and Vuetify!</p>
