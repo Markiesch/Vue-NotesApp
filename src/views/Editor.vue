@@ -1,14 +1,15 @@
 <template>
   <v-container>
     <v-toolbar fixed>
-      <v-toolbar-title>Title</v-toolbar-title>
-      <v-spacer></v-spacer>
       <v-btn icon><v-icon>mdi-format-align-left</v-icon></v-btn>
       <v-btn icon><v-icon>mdi-format-align-center</v-icon></v-btn>
       <v-btn icon><v-icon>mdi-format-align-justify</v-icon></v-btn>
       <v-btn icon><v-icon>mdi-format-align-right</v-icon></v-btn>
       <v-btn icon><v-icon>mdi-palette</v-icon></v-btn>
       <v-spacer></v-spacer>
+      <v-btn @click="deleteNote" icon>
+        <v-icon>mdi-trash-can</v-icon>
+      </v-btn>
       <v-btn :color="note.favorite ? 'error' : ''" @click="toggleFavorite" icon>
         <v-icon>{{ note.favorite ? "mdi-heart" : "mdi-heart-plus" }}</v-icon>
       </v-btn>
@@ -22,8 +23,8 @@
 </template>
 
 <script>
-import {Component, Vue} from "vue-property-decorator";
-import {Getter} from "vuex-class";
+import { Component, Vue } from "vue-property-decorator";
+import { Getter } from "vuex-class";
 import store from "@/store"
 
 @Component({
@@ -46,9 +47,9 @@ export default class Editor extends Vue {
     text: "",
     favorite: false,
     deleted: false,
+    id: 0,
   }
   startingNote = { title: "", text: "", favorite: false };
-  noteId = null;
   unsavedChanges = false;
   loading = false;
 
@@ -57,16 +58,23 @@ export default class Editor extends Vue {
   saveNote() {
     this.loading = true;
     const note = this.note;
-    const id = this.noteId;
+    const {id} = this.note;
     store.dispatch("saveNote", {note, id}).then(() => {
       this.loading = false;
       this.unsavedChanges = false;
+      this.startingNote.title = note.title;
+      this.startingNote.text = note.text;
+      this.startingNote.favorite = note.favorite;
     });
   }
 
   toggleFavorite() {
     this.note.favorite = !this.note.favorite;
     this.setUnsavedChanges();
+  }
+
+  deleteNote() {
+
   }
 
   setUnsavedChanges() {
@@ -79,7 +87,9 @@ export default class Editor extends Vue {
     try {
       const id = parseInt(this.id);
       const note = this.getNoteById(id);
+      if (!note) return;
       this.note = note;
+      // Workaround to make "StartingNote" not reactive
       this.startingNote.title = note.title;
       this.startingNote.text = note.text;
       this.startingNote.favorite = note.favorite;

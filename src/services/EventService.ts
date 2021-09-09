@@ -11,8 +11,8 @@ const apiClient = axios.create({
 });
 
 export default {
-    getNotes(perPage: number, page: number) {
-        return apiClient.get("/notes?_limit=" + perPage + "&_page=" + page);
+    getNotes() {
+        return apiClient.get("/notes");
     },
     getNote(id: number) {
         return apiClient.get("/notes/" + id);

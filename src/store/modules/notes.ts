@@ -1,4 +1,5 @@
 import EventService from "../../services/EventService";
+import router from "@/router";
 
 export const state = {
     notes: [],
@@ -9,30 +10,32 @@ export const state = {
 }
 
 export const mutations = {
-    ADD_NOTE(state : any, note : any) {
+    ADD_NOTE(state: any, note: any) {
         state.notes.push(note);
     },
-    SET_NOTES(state : any, notes : any) {
+    SET_NOTES(state: any, notes: any) {
         state.notes = notes;
     },
-    SET_TOTAL(state : any, count : any) {
+    SET_TOTAL(state: any, count: any) {
       state.count = parseInt(count)
     },
-    SET_NOTE(state : any, note : any) {
+    SET_NOTE(state: any, note: any) {
         state.note = note;
     },
 }
 
 export const actions = {
-    createNote({ commit } : any) {
+    createNote({ state, commit } : any) {
         const note = { title: "New Note", text: "Description", favorite: false, deleted: false}
-        return EventService.postNote(note).then(() => {
-            commit("ADD_NOTE", note);
-            commit("SET_NOTE", note);
-        });
+        return EventService.postNote(note).then((response) => {
+            commit("ADD_NOTE", response.data);
+            commit("SET_NOTE", response.data);
+
+            router.push({name: "Editor", params: { id: response.data.id }})
+         });
     },
-    fetchNotes({ commit, dispatch }: any, { page }: any) {
-        return EventService.getNotes(state.perPage, page).then((response) => {
+    fetchNotes({ commit, dispatch }: any) {
+        return EventService.getNotes().then((response) => {
             commit("SET_TOTAL", parseInt(response.headers["x-total-count"]));
             commit("SET_NOTES", response.data);
         }).catch(error => {
@@ -72,9 +75,9 @@ export const actions = {
 }
 
 export const getters = {
-    getNoteById: (state: any) => (id: number) => {
-        return state.notes.find((note: any) => note.id == id);
-    },
+    getNotes: (state: any) => state.notes,
+    getCurrentNote: (state: any) => state.note,
+    getNoteById: (state: any) => (id: number) => state.notes.find((note: any) => note.id === id),
     // For later when implementing pagination on dashboard page!
     getTodoLength(state: any) {
         return (maxPerPage: number) : number => {
@@ -87,13 +90,7 @@ export const getters = {
     getRecentNotes(state: any) {
         const recentNotesIds = state.recentNotes;
         let recentNotes = [];
-
-        for (const note of state.notes) {
-            if (recentNotesIds.includes(note.id)) {
-                recentNotes.push(note);
-            }
-        }
-
+        for (const note of state.notes) if (recentNotesIds.includes(note.id)) recentNotes.push(note);
         return recentNotes;
     }
 }

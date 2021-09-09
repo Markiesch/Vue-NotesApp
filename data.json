@@ -1,25 +1,25 @@
 {
   "notes": [
     {
-      "title": "New Newss",
-      "text": "description for this insane new notes",
-      "favorite": false,
+      "title": "New Note",
+      "text": "Description",
+      "favorite": true,
       "deleted": false,
-      "id": 6
+      "id": 1
     },
     {
       "title": "New Note",
       "text": "Description",
       "favorite": false,
       "deleted": false,
-      "id": 7
+      "id": 2
     },
     {
       "title": "New Note",
       "text": "Description",
       "favorite": false,
       "deleted": false,
-      "id": 8
+      "id": 3
     }
   ]
 }

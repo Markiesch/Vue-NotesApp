@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer class="nav" fixed app v-model="drawer">
+    <v-navigation-drawer class="nav fill-height" fixed app v-model="drawer">
       <Navigation />
     </v-navigation-drawer>
     <v-main class="background">
@@ -11,7 +11,7 @@
   </v-app>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 import Navigation from "@/components/Navigation.vue"
 
@@ -29,6 +29,12 @@ export default Vue.extend({
 </script>
 
 <style>
+*,
+*::before,
+*::after {
+  font-family: "Poppins", Arial, sans-serif;
+}
+
 .pointer {
   cursor: pointer;
 }
