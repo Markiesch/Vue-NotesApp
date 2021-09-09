@@ -1,0 +1,25 @@
+{
+  "notes": [
+    {
+      "title": "New News",
+      "text": "description for this insane new notes",
+      "favorite": false,
+      "deleted": false,
+      "id": 6
+    },
+    {
+      "title": "New Note",
+      "text": "Description",
+      "favorite": false,
+      "deleted": false,
+      "id": 7
+    },
+    {
+      "title": "New Note",
+      "text": "Description",
+      "favorite": false,
+      "deleted": false,
+      "id": 8
+    }
+  ]
+}
