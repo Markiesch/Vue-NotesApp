@@ -14,8 +14,8 @@
       </v-btn>
     </v-toolbar>
     <v-container>
-      <v-text-field @input="unsavedChanges = true" autocomplete="off" label="Title" v-model="note.title" solo contenteditable="true" />
-      <v-textarea @input="unsavedChanges = true" label="Text" v-model="note.text" solo />
+      <v-text-field @input="setUnsavedChanges()" autocomplete="off" label="Title" v-model="note.title" solo contenteditable="true" />
+      <v-textarea @input="setUnsavedChanges()" label="Text" v-model="note.text" solo />
       <v-btn :disabled="!unsavedChanges" :loading="loading" color="primary" @click="saveNote">Save</v-btn>
     </v-container>
   </v-container>
@@ -42,11 +42,12 @@ import store from "@/store"
 
 export default class Editor extends Vue {
   note = {
-    title: null,
-    text: null,
+    title: "",
+    text: "",
     favorite: false,
     deleted: false,
   }
+  startingNote = { title: "", text: "", };
   noteId = null;
   unsavedChanges = false;
   loading = false;
@@ -63,13 +64,22 @@ export default class Editor extends Vue {
     });
   }
 
+  setUnsavedChanges() {
+    if (this.startingNote.title !== this.note.title || this.startingNote.text !== this.note.text) return this.unsavedChanges = true;
+    this.unsavedChanges = false;
+  }
+
   created() {
     try {
       const id = parseInt(this.id);
+      const note = this.getNoteById(id);
 
-      this.note.title = this.getNoteById(id).title;
-      this.note.text = this.getNoteById(id).text;
+      this.note.title = note.title;
+      this.note.text = note.text;
       this.noteId = id;
+
+      this.startingNote.title = this.note.title;
+      this.startingNote.text = this.note.text;
 
       store.dispatch("addRecent", id);
     } catch (err) {
