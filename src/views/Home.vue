@@ -44,7 +44,7 @@ import NProgress from "nprogress";
     const page = parseInt(to.query.page) || 1;
 
     store.dispatch("getRecentNotes");
-    store.dispatch("fetchNotes", {page,}).then(() => {
+    store.dispatch("fetchNotes", { page }).then(() => {
       NProgress.done();
       next()
     });
@@ -56,51 +56,9 @@ export default class Home extends Vue {
   @Getter("getRecentNotes") recentNotes;
   @State("note") note;
 
-  data() {
-    return {
-      loadingRecent: false,
-    }
-  };
-
   // === functions ===
   openNote(note) {
     this.$router.push("edit/" + note);
   }
 };
-
-// === Old/casual method ===
-
-// import { mapState, mapGetters } from "vuex";
-// import store from "@/store"
-// import NProgress from "nprogress";
-//
-// export default {
-//   beforeRouteEnter(to, from, next) {
-//     NProgress.start();
-//     const page = parseInt(to.query.page) || 1;
-//
-//     store.dispatch("getRecentNotes");
-//     store.dispatch("fetchNotes", {page,}).then(() => {
-//       NProgress.done();
-//       next()
-//     });
-//   },
-//
-//   data() {
-//     return {
-//      loadingRecent: false,
-//     }
-//   },
-//
-//   computed: {
-//     ...mapState(["note"]),
-//     ...mapGetters(["getRecentNotes"])
-//   },
-//
-//   methods: {
-//     openNote(note) {
-//       this.$router.push("edit/" + note);
-//     },
-//   },
-// };
 </script>

@@ -22,55 +22,48 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import store from "@/store/index"
+import { Component, Vue } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+import store from "@/store"
 
-export default {
+@Component({
+  props: {
+    id: {
+      default: 1
+    }
+  },
   beforeRouteLeave (to, from, next) {
     if (!this.unsavedChanges) return next();
     const answer = window.confirm("Do you really want to leave?  You have unsaved changes!");
-    if (answer) {
-      next();
-    } else {
-      next(false)
-    }
+    if (answer) return next();
+    next(false)
   },
+})
 
-  props: {
-    id: {
-      required: true,
-    }
-  },
+export default class Editor extends Vue {
+  note = {
+    title: null,
+    text: null,
+    favorite: false,
+    deleted: false,
+  }
+  noteId = null;
+  unsavedChanges = false;
+  loading = false;
 
-  data() {
-    return {
-      note: {
-        title: null,
-        text: null,
-        favorite: false,
-        deleted: false,
-      },
-      noteId: null,
-      unsavedChanges: false,
-      loading: false,
-    }
-  },
+  @Getter("getNoteById") getNoteById;
 
-  computed: mapGetters(["getNoteById"]),
+  saveNote() {
+    this.loading = true;
+    const note = this.note;
+    const id = this.noteId;
+    store.dispatch("saveNote", {note, id}).then(() => {
+      this.loading = false;
+      this.unsavedChanges = false;
+    });
+  }
 
-  methods: {
-    saveNote() {
-      this.loading = true;
-      const note = this.note;
-      const id = this.noteId;
-      store.dispatch("saveNote", { note, id }).then(() => {
-        this.loading = false;
-        this.unsavedChanges = false;
-      });
-    },
-  },
-
-  mounted() {
+  created() {
     try {
       const id = parseInt(this.id);
 
@@ -84,5 +77,5 @@ export default {
       console.warn(err)
     }
   }
-};
+}
 </script>
