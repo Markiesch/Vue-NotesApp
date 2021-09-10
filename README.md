@@ -4,11 +4,11 @@
     </a>
     <h1>Vue Notes App</h1>
     <p>A simple notes web application made with VueJS and Vuetify!</p>
-    <a href="/">View Website</a>
+    <a href="https://vue-notesapp.netlify.app/">View Website</a>
     ·
-    <a href="">Report Bug</a>
+    <a href="https://github.com/Markiesch/Vue-NotesApp/issues">Report Bug</a>
     ·
-    <a href="">Request Feature</a>
+    <a href="https://github.com/Markiesch/Vue-NotesApp/issues">Request Feature</a>
 </div>
 
 <br />
