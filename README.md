@@ -14,3 +14,11 @@
 <br />
 <br />
 <br />
+
+### TODO
+
+1. Functionality for delete button
+2. Option to store data in localstorage
+3. Fix UX/UI issues
+4. Don't show note count when empty
+5. Light/dark mode

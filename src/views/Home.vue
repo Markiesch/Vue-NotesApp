@@ -44,27 +44,22 @@
 import { Component, Vue } from "vue-property-decorator";
 import { State, Getter, Action } from "vuex-class";
 import store from "@/store"
-import NProgress from "nprogress";
 
 @Component({
   components: {},
   beforeRouteEnter(to, from, next) {
-    NProgress.start();
     store.dispatch("getRecentNotes");
     store.dispatch("fetchNotes").then(() => {
-      NProgress.done();
       next()
     });
   },
 })
 
 export default class Home extends Vue {
-  // === vuex ===
   @Getter("getRecentNotes") recentNotes;
   @State("note") note;
   @Action("createNote") createNote;
 
-  // === functions ===
   openNote(note) {
     this.$router.push("edit/" + note);
   }

@@ -40,7 +40,7 @@ export default class Navigation extends Vue {
   selectedItem = 0;
   items = [
     { text: "Dashboard", icon: "mdi-home", route: { name: 'Dashboard' } },
-    { text: "Editor", icon: "mdi-file-cad", route: { name: 'Editor' } },
+    { text: "Editor", icon: "mdi-file-cad", route: { name: 'Editor', params: { id: "0" } } },
   ];
   snackbar = false;
 
@@ -63,17 +63,18 @@ export default class Navigation extends Vue {
       let param = null;
       if (this.notes.length > 0) param = this.notes[0].id
       if (this.recentNotes.length > 0) param = this.recentNotes[0].id
+      if (this.note.id) param = this.note.id
       if (!param) {
         this.createNote().then(() => {
           this.fetchNotes().then(() => {
             return this.navigate(item, i)
           });
-        })
+        });
       } else {
         this.$router.push({ name: "Editor", params: { id: param } })
       }
     } else {
-      this.$router.push(item.route);
+    this.$router.push(item.route);
     }
   }
 }

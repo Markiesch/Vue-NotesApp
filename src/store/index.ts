@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import * as note from "@/store/modules/notes.ts";
+// @ts-ignore
+import * as note from "@/store/modules/notes.js";
 
 Vue.use(Vuex);
 

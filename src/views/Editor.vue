@@ -33,9 +33,14 @@ import store from "@/store"
       default: 1
     }
   },
+  beforeRouteEnter(to, from, next) {
+    store.dispatch("fetchNotes");
+    store.dispatch("fetchNote", to.params.id);
+    next();
+  },
   beforeRouteLeave (to, from, next) {
     if (!this.unsavedChanges) return next();
-    const answer = window.confirm("Do you really want to leave?  You have unsaved changes!");
+    const answer = window.confirm("Do you really want to leave? You have unsaved changes!");
     if (answer) return next();
     next(false)
   },
@@ -84,6 +89,13 @@ export default class Editor extends Vue {
   }
 
   created() {
+    window.addEventListener("keydown", (e) => {
+      if (e.key.toLowerCase() === "s" && e.ctrlKey === true) {
+        this.saveNote();
+        e.preventDefault();
+      }
+    });
+
     try {
       const id = parseInt(this.id);
       const note = this.getNoteById(id);
