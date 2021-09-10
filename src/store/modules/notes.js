@@ -75,12 +75,8 @@ export const actions = {
 
         for (let i = 0; i < recentNotes.length; i++) {
             const recentNote = recentNotes[i];
-            for (const savedNote of savedNotes) {
-                if (recentNote !== savedNote.id) {
-                    recentNotes.splice(i, 1)
-                    console.log("deleted: " + recentNote)
-                }
-            }
+            for (const savedNote of savedNotes)
+                if (recentNote !== savedNote.id) recentNotes.splice(i, 1)
         }
 
         localStorage.setItem("recentNotes", JSON.stringify(recentNotes))
