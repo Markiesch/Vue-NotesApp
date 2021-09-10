@@ -24,7 +24,7 @@
 
 <script>
 import { Component, Vue } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+import { Getter, Action } from "vuex-class";
 import store from "@/store"
 
 @Component({
@@ -59,6 +59,11 @@ export default class Editor extends Vue {
   loading = false;
 
   @Getter("getNoteById") getNoteById;
+  @Action("deleteNote") delNote;
+
+  deleteNote() {
+    this.delNote(+this.id);
+  }
 
   saveNote() {
     this.loading = true;
@@ -78,10 +83,6 @@ export default class Editor extends Vue {
     this.setUnsavedChanges();
   }
 
-  deleteNote() {
-
-  }
-
   setUnsavedChanges() {
     this.unsavedChanges = this.note.title !== this.startingNote.title ||
                           this.note.text !== this.startingNote.text ||
@@ -91,8 +92,8 @@ export default class Editor extends Vue {
   created() {
     window.addEventListener("keydown", (e) => {
       if (e.key.toLowerCase() === "s" && e.ctrlKey === true) {
-        this.saveNote();
         e.preventDefault();
+        if (this.unsavedChanges) this.saveNote();
       }
     });
 

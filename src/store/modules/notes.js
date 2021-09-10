@@ -54,6 +54,36 @@ export const actions = {
         for (let i = 0; i < currentNotes.length; i++)
             if (currentNotes[i].id === id) currentNotes[i] = note;
         localStorage.setItem("notes", JSON.stringify(currentNotes))
+    },
+    deleteNote({ dispatch }, id ) {
+        const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+        if (savedNotes.length < 1) return;
+
+        for (let i = 0; i < savedNotes.length; i++){
+            const savedNote = savedNotes[i];
+            if (savedNote.id === id) savedNotes.splice(i, 1);
+        }
+        localStorage.setItem("notes", JSON.stringify(savedNotes));
+        dispatch("fixRecentNotes")
+        router.push("/").then(() => {});
+    },
+    fixRecentNotes() {
+        const recentNotes = JSON.parse(localStorage.getItem("recentNotes")) || [];
+        const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+
+        if (recentNotes.length < 1) return;
+
+        for (let i = 0; i < recentNotes.length; i++) {
+            const recentNote = recentNotes[i];
+            for (const savedNote of savedNotes) {
+                if (recentNote !== savedNote.id) {
+                    recentNotes.splice(i, 1)
+                    console.log("deleted: " + recentNote)
+                }
+            }
+        }
+
+        localStorage.setItem("recentNotes", JSON.stringify(recentNotes))
     }
 }
 
