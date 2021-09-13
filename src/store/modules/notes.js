@@ -27,7 +27,7 @@ export const actions = {
         savedNotes.push(note);
         localStorage.setItem("notes", JSON.stringify(savedNotes))
         commit("SET_NOTES", savedNotes);
-        router.push({name: "Editor", params: {id: id.toString()}}).then(r => {})
+        router.push({name: "Editor", params: { id: id.toString() }});
     },
     fetchNotes({ commit }) {
         const notes = JSON.parse(localStorage.getItem("notes")) || [];
@@ -36,7 +36,7 @@ export const actions = {
     getRecentNotes({ state }) {
         state.recentNotes = JSON.parse(localStorage.getItem("recentNotes")) || [];
     },
-    addRecent({ state, commit }, id) {
+    addRecent({ state }, id) {
         let recentNotes = JSON.parse(localStorage.getItem("recentNotes")) || [];
         const index = recentNotes.indexOf(id);
         if (index > -1) recentNotes.splice(index, 1);
@@ -52,6 +52,8 @@ export const actions = {
         const currentNotes = JSON.parse(localStorage.getItem("notes"));
         for (let i = 0; i < currentNotes.length; i++)
             if (currentNotes[i].id === id) currentNotes[i] = note;
+
+        commit("SET_NOTES", currentNotes);
         localStorage.setItem("notes", JSON.stringify(currentNotes))
     },
     deleteNote({ dispatch }, id ) {

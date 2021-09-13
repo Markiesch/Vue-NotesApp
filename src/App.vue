@@ -29,12 +29,6 @@ export default Vue.extend({
 </script>
 
 <style>
-*,
-*::before,
-*::after {
-  font-family: "Poppins", Arial, sans-serif;
-}
-
 .pointer {
   cursor: pointer;
 }
