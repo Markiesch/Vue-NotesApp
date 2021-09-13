@@ -70,15 +70,17 @@ export const actions = {
         router.push("/").then(() => {});
     },
     fixRecentNotes() {
-        const recentNotes = JSON.parse(localStorage.getItem("recentNotes")) || [];
-        const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-
+        let recentNotes = JSON.parse(localStorage.getItem("recentNotes")) || [];
         if (recentNotes.length < 1) return;
+        const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+        let savedNotesId = [];
+        for (const savedNote of savedNotes) savedNotesId.push(savedNote.id);
+
+        if (savedNotes.length < 1) recentNotes = [];
 
         for (let i = 0; i < recentNotes.length; i++) {
             const recentNote = recentNotes[i];
-            for (const savedNote of savedNotes)
-                if (recentNote !== savedNote.id) recentNotes.splice(i, 1)
+            if (!savedNotesId.includes(recentNote)) recentNotes.splice(i, 1)
         }
 
         localStorage.setItem("recentNotes", JSON.stringify(recentNotes))
@@ -94,5 +96,6 @@ export const getters = {
         let recentNotes = [];
         for (const note of state.notes) if (recentNotesIds.includes(note.id)) recentNotes.push(note);
         return recentNotes;
-    }
+    },
+    getFavoriteNotes: state => state.notes.filter(note => note.favorite),
 }
