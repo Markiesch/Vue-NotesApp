@@ -14,6 +14,18 @@
       </v-row>
     </v-container>
 
+    <v-container v-if="favoriteNotes.length">
+      <h1>Favorite Notes</h1>
+      <v-row>
+        <v-col v-for="note in favoriteNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
+          <v-card @contextmenu="show($event, note)" class="backgroundAccent" outlined>
+            <v-card-title>{{ note.title }}</v-card-title>
+            <v-card-subtitle>{{ note.text }}</v-card-subtitle>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <v-container class="mt-6">
       <v-badge :content="note.notes.length">
         <h1 class="primaryText">All notes</h1>
@@ -97,6 +109,7 @@ export default class Home extends Vue {
   };
 
   @Getter("getRecentNotes") recentNotes;
+  @Getter("getFavoriteNotes") favoriteNotes;
   @State("note") note;
   @Action("createNote") createNote;
 
