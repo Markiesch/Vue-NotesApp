@@ -1,4 +1,3 @@
-// import EventService from "../../services/EventService";
 import router from "@/router";
 
 export const state = {
@@ -65,6 +64,7 @@ export const actions = {
         }
         localStorage.setItem("notes", JSON.stringify(savedNotes));
         dispatch("fixRecentNotes")
+        if (router.history.current.name === "Dashboard") return router.go();
         router.push("/").then(() => {});
     },
     fixRecentNotes() {

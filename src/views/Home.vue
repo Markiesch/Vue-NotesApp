@@ -5,7 +5,7 @@
       <v-row>
         <v-col v-for="note in recentNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
           <v-hover v-slot="{ hover }">
-            <v-card class="backgroundAccent" :class="{ 'backgroundAccent2': hover}" outlined>
+            <v-card :ripple="false" @contextmenu="show($event, note)" class="backgroundAccent" :class="{ 'backgroundAccent2': hover}" outlined>
               <v-card-title>{{ note.title }}</v-card-title>
               <v-card-subtitle>{{ note.text }}</v-card-subtitle>
             </v-card>
@@ -22,7 +22,7 @@
       <v-row>
         <v-col v-for="note in note.notes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
           <v-hover v-slot="{ hover }">
-            <v-card class="backgroundAccent" :class="{ 'backgroundAccent2': hover}" outlined>
+            <v-card @contextmenu="show($event, note)" class="backgroundAccent" :class="{ 'backgroundAccent2': hover}" outlined>
               <v-card-title>{{ note.title }}</v-card-title>
               <v-card-subtitle>{{ note.text }}</v-card-subtitle>
             </v-card>
@@ -37,6 +37,35 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-menu v-model="showMenu" :position-x="x" :position-y="y" absolute offset-y>
+      <v-list dense nav>
+        <v-list-item link @click="openNote(clickedNote.id)">
+          <v-list-item-icon>
+            <v-icon>mdi-pen</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Edit</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="toggleFavorite">
+          <v-list-item-icon>
+            <v-icon :color="clickedNote.favorite ? 'error' : ''">{{ clickedNote.favorite ? "mdi-heart" : "mdi-heart-plus" }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Toggle Favorite</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="deleteNote">
+          <v-list-item-icon>
+            <v-icon>mdi-trash-can</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Delete Note</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </v-container>
 </template>
 
@@ -56,12 +85,44 @@ import store from "@/store"
 })
 
 export default class Home extends Vue {
+  showMenu = false;
+  x = 0;
+  y = 0;
+  clickedNote = {
+    title: "",
+    text: "",
+    favorite: false,
+    deleted: false,
+    id: 1,
+  };
+
   @Getter("getRecentNotes") recentNotes;
   @State("note") note;
   @Action("createNote") createNote;
 
   openNote(note) {
     this.$router.push("edit/" + note);
+  }
+
+  show(event, note) {
+    event.preventDefault();
+    this.clickedNote = note;
+    this.showMenu = false;
+    this.x = event.clientX;
+    this.y = event.clientY;
+    this.$nextTick(() => this.showMenu = true);
+  }
+
+  toggleFavorite() {
+    const note = this.clickedNote;
+    const { id } = note;
+    this.clickedNote.favorite = !note.favorite;
+    store.dispatch("saveNote", { note, id })
+  }
+
+  deleteNote() {
+    const { id } = this.clickedNote;
+    store.dispatch("deleteNote", id)
   }
 };
 </script>
