@@ -41,6 +41,7 @@ export default class Navigation extends Vue {
   items = [
     { text: "Dashboard", icon: "mdi-home", route: { name: 'Dashboard' } },
     { text: "Editor", icon: "mdi-file-cad", route: { name: 'Editor', params: { id: "0" } } },
+    { text: "Settings", icon: "mdi-cog", route: { name: 'Settings' } },
   ];
   snackbar = false;
 

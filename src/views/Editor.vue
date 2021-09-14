@@ -17,7 +17,7 @@
     <v-container>
       <v-text-field @input="setUnsavedChanges()" autocomplete="off" label="Title" v-model="note.title" solo contenteditable="true" />
       <v-textarea @input="setUnsavedChanges()" label="Text" v-model="note.text" solo />
-      <v-btn :disabled="!unsavedChanges" :loading="loading" color="primary" @click="saveNote">Save</v-btn>
+      <v-btn v-if="!settings.autoSave" :disabled="!unsavedChanges" :loading="loading" color="primary" @click="saveNote">Save</v-btn>
     </v-container>
   </v-container>
 </template>
@@ -59,6 +59,7 @@ export default class Editor extends Vue {
   loading = false;
 
   @Getter("getNoteById") getNoteById;
+  @Getter("getSettings") settings;
   @Action("deleteNote") delNote;
 
   deleteNote() {
@@ -84,6 +85,8 @@ export default class Editor extends Vue {
   }
 
   setUnsavedChanges() {
+    if (this.settings.autoSave) return this.saveNote();
+
     this.unsavedChanges = this.note.title !== this.startingNote.title ||
                           this.note.text !== this.startingNote.text ||
                           this.note.favorite !== this.startingNote.favorite

@@ -1,6 +1,6 @@
 <template>
   <v-container color="primary">
-    <v-container v-if="recentNotes.length > 0">
+    <v-container v-if="recentNotes.length && settings.showRecents">
       <h1>Recent Notes</h1>
       <v-row>
         <v-col v-for="note in recentNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
@@ -14,7 +14,7 @@
       </v-row>
     </v-container>
 
-    <v-container v-if="favoriteNotes.length">
+    <v-container v-if="favoriteNotes.length  && settings.showFavorites">
       <h1>Favorite Notes</h1>
       <v-row>
         <v-col v-for="note in favoriteNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
@@ -110,6 +110,7 @@ export default class Home extends Vue {
 
   @Getter("getRecentNotes") recentNotes;
   @Getter("getFavoriteNotes") favoriteNotes;
+  @Getter("getSettings") settings;
   @State("note") note;
   @Action("createNote") createNote;
 

@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Dashboard from "../views/Home.vue";
 import Editor from "../views/Editor.vue";
+import Settings from "../views/Settings.vue";
 import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
@@ -19,6 +20,13 @@ const routes = [
     component: Editor,
     props: true,
     meta: { title: "Notes - Editor" }
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: Settings,
+    props: true,
+    meta: { title: "Notes - Settings" }
   },
   {
     path: "*",

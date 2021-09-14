@@ -98,4 +98,13 @@ export const getters = {
         return recentNotes;
     },
     getFavoriteNotes: state => state.notes.filter(note => note.favorite),
+    getSettings: () => {
+        const settings = JSON.parse(localStorage.getItem("settings")) || {
+            "showRecents": true,
+            "showFavorites": true,
+            "autoSave": false,
+        };
+        localStorage.setItem("settings", JSON.stringify(settings));
+        return settings;
+    },
 }
