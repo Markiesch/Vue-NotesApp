@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation absolute color="primary">
+  <v-bottom-navigation fixed color="primary">
     <template v-for="(item, index) in items">
       <v-btn :key="index" icon :to="item.route">
         <span>{{ item.text }}</span>
@@ -15,6 +15,7 @@
 </template>
 
 <script lang="ts">
+import { Action } from "vuex-class";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
@@ -25,5 +26,7 @@ export default class Navigation extends Vue {
     { text: "Editor", icon: "mdi-file-cad", route: { name: "Editor", params: { id: "0" } } },
     { text: "Settings", icon: "mdi-cog", route: { name: "Settings" } },
   ];
+
+  @Action("createNote") createNote: any;
 }
 </script>
