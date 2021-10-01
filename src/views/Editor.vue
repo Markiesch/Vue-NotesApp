@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-toolbar flat fixed>
+    <v-toolbar v-if="editor" flat fixed>
       <v-btn @click="editor.chain().toggleBold().run()" :color="editor.isActive('bold') ? 'primary' : ''" icon><v-icon>mdi-format-bold</v-icon></v-btn>
       <v-btn @click="editor.chain().toggleItalic().run()" :color="editor.isActive('italic') ? 'primary' : ''" icon><v-icon>mdi-format-italic</v-icon></v-btn>
       <v-btn @click="editor.chain().toggleStrike().run()" :color="editor.isActive('strike') ? 'primary' : ''" icon><v-icon>mdi-format-strikethrough</v-icon></v-btn>
