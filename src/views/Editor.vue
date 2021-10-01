@@ -148,6 +148,10 @@ export default class VueEditor extends Vue {
   line-height: 1;
 }
 
+.ProseMirror p {
+  margin: 0;
+}
+
 code {
   background-color: rgba(#616161, 0.1);
   color: #616161;
