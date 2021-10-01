@@ -1,7 +1,7 @@
 <template>
-  <v-card max-height="88" style="overflowY: scroll" :ripple="false" @contextmenu="context($event, note)" class="backgroundAccent card" outlined>
-    <v-card-title>{{ note.title }}</v-card-title>
-    <v-card-subtitle class="subtitle pt-2" v-html="note.text">{{ note.text }}</v-card-subtitle>
+  <v-card :ripple="false" @contextmenu="context($event, note)" class="backgroundAccent card" outlined>
+    <v-card-title class="pa-3">{{ note.title }}</v-card-title>
+    <v-card-subtitle class="subtitle pa-3 pt-2" v-html="note.text">{{ note.text }}</v-card-subtitle>
   </v-card>
 </template>
 
@@ -17,7 +17,7 @@ export default class Home extends Vue {
 
 <style>
 .card {
-  max-height: 150px;
+  height: 88px;
   overflow-y: scroll;
 }
 
@@ -25,15 +25,12 @@ export default class Home extends Vue {
   width: 5px;
 }
 
-.card::-webkit-scrollbar-track {
-  background: #fbfbfb;
-}
-.card::-webkit-scrollbar-thumb {
-  background: #eeeeee;
+.card:hover::-webkit-scrollbar-thumb {
+  background-color: #eee;
 }
 
 .card::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background-color: #ddd;
 }
 
 .subtitle {

@@ -1,48 +1,26 @@
 <template>
-  <v-container>
-    <v-toolbar v-if="editor" elevation="1" dense fixed>
-      <v-btn @click="editor.chain().focus().toggleBold().run()" :color="editor.isActive('bold') ? 'primary' : ''" icon><v-icon>mdi-format-bold</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleItalic().run()" :color="editor.isActive('italic') ? 'primary' : ''" icon><v-icon>mdi-format-italic</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleStrike().run()" :color="editor.isActive('strike') ? 'primary' : ''" icon><v-icon>mdi-format-strikethrough</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleCode().run()" :color="editor.isActive('code') ? 'primary' : ''" icon><v-icon>mdi-code-tags</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().unsetAllMarks().run()" icon><v-icon>mdi-eraser-variant</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().setParagraph().run()" :color="editor.isActive('paragraph') ? 'primary' : ''" icon><v-icon>mdi-format-paragraph</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"  :color="editor.isActive('heading', { level: 1 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-1</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"  :color="editor.isActive('heading', { level: 2 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-2</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"  :color="editor.isActive('heading', { level: 3 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-3</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleHeading({ level: 4 }).run()"  :color="editor.isActive('heading', { level: 4 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-4</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleHeading({ level: 5 }).run()"  :color="editor.isActive('heading', { level: 5 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-5</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleHeading({ level: 6 }).run()"  :color="editor.isActive('heading', { level: 6 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-6</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleBulletList().run()" :color="editor.isActive('bulletList') ? 'primary' : ''" icon><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleOrderedList().run()" :color="editor.isActive('orderedList') ? 'primary' : ''" icon><v-icon>mdi-format-list-numbered</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleCodeBlock().run()" :color="editor.isActive('codeBlock') ? 'primary' : ''" icon><v-icon>mdi-file-code-outline</v-icon></v-btn>
-      <v-btn @click="editor.chain().focus().toggleBlockquote().run()" :color="editor.isActive('blockQuote') ? 'primary' : ''" icon><v-icon>mdi-format-quote-close</v-icon></v-btn>
-      <v-spacer></v-spacer>
-      <v-btn @click="deleteNote" icon>
-        <v-icon>mdi-trash-can</v-icon>
-      </v-btn>
-      <v-btn :color="note.favorite ? 'error' : ''" @click="toggleFavorite" icon>
-        <v-icon>{{ note.favorite ? "mdi-heart" : "mdi-heart-plus" }}</v-icon>
-      </v-btn>
-    </v-toolbar>
+  <v-container v-if="editor">
+    <Toolbar :editor="editor" :note="note" :setUnsavedChanges="setUnsavedChanges"></Toolbar>
     <v-container>
       <v-text-field v-model="note.title" @input="setUnsavedChanges()" autocomplete="off" label="Title" solo />
       <editor-content :editor="editor" />
-      <v-btn v-if="!settings.autoSave" :disabled="!unsavedChanges" :loading="loading" color="primary" @click="saveNote">Save</v-btn>
+      <v-btn v-if="!settings.autoSave" :disabled="!unsavedChanges" color="primary" @click="saveNote">Save</v-btn>
     </v-container>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
+import { Getter } from "vuex-class";
 import { Editor, EditorContent } from "@tiptap/vue-2";
+import Toolbar from "../components/Toolbar.vue";
 import StarterKit from "@tiptap/starter-kit";
 import store from "@/store";
 
 @Component({
   components: {
     EditorContent,
+    Toolbar,
   },
   beforeRouteEnter(to, from, next) {
     store.dispatch("fetchNote", to.params.id);
@@ -61,24 +39,16 @@ export default class VueEditor extends Vue {
   };
   startingNote = { title: "", text: "", favorite: false };
   unsavedChanges = false;
-  loading = false;
-  editor: any = null;
-  editContent: string = "fafafa";
+  editor: Editor | null = null;
+  editContent = "";
 
   @Getter("getNoteById") getNoteById: any;
   @Getter("getSettings") settings: any;
-  @Action("deleteNote") delNote: any;
-
-  deleteNote() {
-    this.delNote(+this.id);
-  }
 
   saveNote() {
-    this.loading = true;
     const note = this.note;
     const { id } = this.note;
     store.dispatch("saveNote", { note, id }).then(() => {
-      this.loading = false;
       this.unsavedChanges = false;
       this.startingNote.title = note.title;
       this.startingNote.text = note.text;
@@ -86,14 +56,8 @@ export default class VueEditor extends Vue {
     });
   }
 
-  toggleFavorite() {
-    this.note.favorite = !this.note.favorite;
-    this.setUnsavedChanges();
-  }
-
   setUnsavedChanges() {
     if (this.settings.autoSave) return this.saveNote();
-
     this.unsavedChanges = this.note.title !== this.startingNote.title || this.note.text !== this.startingNote.text || this.note.favorite !== this.startingNote.favorite;
   }
 
@@ -105,8 +69,7 @@ export default class VueEditor extends Vue {
       }
     });
 
-    const id = parseInt(this.id);
-    const note = this.getNoteById(id);
+    const note = this.getNoteById(parseInt(this.id));
     if (!note) return;
     this.note = note;
     // Workaround to make "StartingNote" not reactive
@@ -118,8 +81,9 @@ export default class VueEditor extends Vue {
       content: this.note.text,
       extensions: [StarterKit],
       onUpdate: () => {
+        if (!this.editor) return;
         this.note.text = this.editor.getHTML();
-        this.setUnsavedChanges()
+        this.setUnsavedChanges();
       },
       editorProps: {
         attributes: {
@@ -130,7 +94,7 @@ export default class VueEditor extends Vue {
   }
 
   beforeDestroy() {
-    this.editor.destroy();
+    if (this.editor) this.editor.destroy();
   }
 }
 </script>
@@ -153,7 +117,7 @@ code {
 pre {
   background: #eeeeee;
   color: #000;
-  font-family: 'JetBrainsMono', monospace;
+  font-family: "JetBrainsMono", monospace;
   padding: 0.75rem;
   border-radius: 0.5rem;
 }

@@ -1,12 +1,19 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import router from "@/router";
+import router from "../router";
 import { saveStatePlugin, State, Note, defaultSettings } from "./utils";
 
 Vue.use(Vuex);
 
 const notes = JSON.parse(localStorage.getItem("notes") || "[]");
-const settings = JSON.parse(localStorage.getItem("settings")!) || defaultSettings;
+
+let settings;
+const localeSettings = localStorage.getItem("settings");
+if (localeSettings !== null) {
+  settings = JSON.parse(localeSettings);
+} else {
+  settings = defaultSettings;
+}
 
 export default new Vuex.Store({
   plugins: [saveStatePlugin],
@@ -16,8 +23,8 @@ export default new Vuex.Store({
     settings,
   },
   mutations: {
-    SET_NOTES(state: State, notes: any) {
-      state.notes = notes;
+    SET_NOTES(state: State, newNotes: any) {
+      state.notes = newNotes;
     },
     SET_NOTE(state: State, note: any) {
       state.note = note;
@@ -25,16 +32,16 @@ export default new Vuex.Store({
   },
   actions: {
     createNote({ commit, state }: any) {
-      let notes = state.notes;
+      let noteList = state.notes;
       let id = 0;
-      if (notes.length) {
-        for (const note of notes) {
-          if (note.id >= id) id = note.id + 1;
+      if (noteList.length) {
+        for (const item of noteList) {
+          if (item.id >= id) id = item.id + 1;
         }
       }
       const note = { title: "Untilted", text: "Description", favorite: false, deleted: false, id: id };
-      notes.push(note);
-      commit("SET_NOTES", notes);
+      noteList.push(note);
+      commit("SET_NOTES", noteList);
 
       // Send user to editor page with created note
       router.push({ name: "Editor", params: { id: id + "" } });
@@ -54,7 +61,7 @@ export default new Vuex.Store({
       commit("SET_NOTES", currentNotes);
     },
 
-    deleteNote({ commit, dispatch }: any, id: number) {
+    deleteNote({ commit }: any, id: number) {
       const savedNotes = JSON.parse(localStorage.getItem("notes") || "[]");
       if (savedNotes.length < 1) return;
 
