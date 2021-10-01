@@ -7,7 +7,6 @@ Vue.use(Vuex);
 
 const notes = JSON.parse(localStorage.getItem("notes") || "[]");
 const settings = JSON.parse(localStorage.getItem("settings")!) || defaultSettings;
-console.log(settings);
 const recentNotes = JSON.parse(localStorage.getItem("recentNotes") || "[]");
 
 export default new Vuex.Store({
@@ -20,7 +19,6 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_NOTES(state: State, notes: any) {
-      console.log("notes set");
       state.notes = notes;
     },
     SET_NOTE(state: State, note: any) {

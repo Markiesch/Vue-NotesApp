@@ -4,10 +4,7 @@
       <h1>Recent Notes</h1>
       <v-row>
         <v-col v-for="note in recentNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
-          <v-card :ripple="false" @contextmenu="show($event, note)" class="backgroundAccent" outlined>
-            <v-card-title>{{ note.title }}</v-card-title>
-            <v-card-subtitle>{{ note.text }}</v-card-subtitle>
-          </v-card>
+          <Card :note="note" :context="show"></Card>
         </v-col>
       </v-row>
     </v-container>
@@ -16,10 +13,7 @@
       <h1>Favorite Notes</h1>
       <v-row>
         <v-col v-for="note in favoriteNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
-          <v-card @contextmenu="show($event, note)" class="backgroundAccent" outlined>
-            <v-card-title>{{ note.title }}</v-card-title>
-            <v-card-subtitle>{{ note.text }}</v-card-subtitle>
-          </v-card>
+          <Card :note="note" :context="show"></Card>
         </v-col>
       </v-row>
     </v-container>
@@ -31,10 +25,7 @@
       <p v-if="notes.length < 1">It looks like you do not have any files yet!</p>
       <v-row>
         <v-col v-for="note in notes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
-          <v-card @contextmenu="show($event, note)" class="backgroundAccent" outlined>
-            <v-card-title>{{ note.title }}</v-card-title>
-            <v-card-subtitle>{{ note.text }}</v-card-subtitle>
-          </v-card>
+          <Card :note="note" :context="show"></Card>
         </v-col>
         <v-col lg="3" class="pointer" @click="createNote">
           <v-card outlined>
@@ -81,8 +72,13 @@ import { Component, Vue } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 import store from "@/store";
 import { Note } from "@/store/utils";
+import Card from "../components/Card.vue"
 
-@Component
+@Component({
+  components: {
+    Card
+  }
+})
 export default class Home extends Vue {
   showMenu = false;
   x = 0;
@@ -127,3 +123,32 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.card {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+
+
+/* width */
+.card::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.card::-webkit-scrollbar-track {
+  background: #fbfbfb;
+}
+
+/* Handle */
+.card::-webkit-scrollbar-thumb {
+  background: #eeeeee;
+}
+
+/* Handle on hover */
+.card::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+</style>
