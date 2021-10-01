@@ -9,30 +9,34 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
+    path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
-    meta: { title: "Notes - Dashboard" }
+    meta: { title: "Notes - Dashboard" },
   },
   {
     path: "/edit/:id",
     name: "Editor",
     component: Editor,
     props: true,
-    meta: { title: "Notes - Editor" }
+    meta: { title: "Notes - Editor" },
   },
   {
     path: "/settings",
     name: "Settings",
     component: Settings,
     props: true,
-    meta: { title: "Notes - Settings" }
+    meta: { title: "Notes - Settings" },
+  },
+  {
+    path: "/",
+    redirect: { name: "Dashboard" },
   },
   {
     path: "*",
     name: "not-found",
     component: NotFound,
-    meta: { title: "Notes - Not Found" }
+    meta: { title: "Notes - Not Found" },
   },
 ];
 
@@ -41,11 +45,10 @@ const router = new VueRouter({
   routes,
 });
 
-const DEFAULT_TITLE = 'Notes - Dashboard';
-router.afterEach((to, from) => {
+const DEFAULT_TITLE = "Notes - Dashboard";
+router.afterEach((to) => {
   Vue.nextTick(() => {
-    // @ts-ignore
-    document.title = to.meta.title || DEFAULT_TITLE;
+    if (to.meta) document.title = to.meta.title || DEFAULT_TITLE;
   });
 });
 

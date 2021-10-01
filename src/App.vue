@@ -5,27 +5,25 @@
     </v-navigation-drawer>
     <v-main class="background">
       <transition name="fade" mode="out-in">
-        <router-view v-slot="{ Component }" />
+        <router-view />
       </transition>
     </v-main>
   </v-app>
 </template>
 
-<script>
-import Vue from 'vue';
-import Navigation from "@/components/Navigation.vue"
+<script lang="ts">
+import Vue from "vue";
+import Navigation from "@/components/Navigation.vue";
+import Component from "vue-class-component";
 
-export default Vue.extend({
-  name: 'App',
-
+@Component({
   components: {
     Navigation,
   },
-
-  data: () => ({
-    drawer: true
-  }),
-});
+})
+export default class App extends Vue {
+  drawer = true;
+}
 </script>
 
 <style>

@@ -1,11 +1,6 @@
 <template>
   <v-container>
-    <v-toolbar fixed>
-      <v-btn icon><v-icon>mdi-format-align-left</v-icon></v-btn>
-      <v-btn icon><v-icon>mdi-format-align-center</v-icon></v-btn>
-      <v-btn icon><v-icon>mdi-format-align-justify</v-icon></v-btn>
-      <v-btn icon><v-icon>mdi-format-align-right</v-icon></v-btn>
-      <v-btn icon><v-icon>mdi-palette</v-icon></v-btn>
+    <v-toolbar flat fixed>
       <v-spacer></v-spacer>
       <v-btn @click="deleteNote" icon>
         <v-icon>mdi-trash-can</v-icon>
@@ -15,52 +10,41 @@
       </v-btn>
     </v-toolbar>
     <v-container>
-      <v-text-field @input="setUnsavedChanges()" autocomplete="off" label="Title" v-model="note.title" solo contenteditable="true" />
-      <v-textarea @input="setUnsavedChanges()" label="Text" v-model="note.text" solo />
+      <v-text-field v-model="note.title" @input="setUnsavedChanges()" autocomplete="off" label="Title" solo />
+      <v-textarea v-model="note.text" @input="setUnsavedChanges()" autocomplete="off" label="Text" solo />
       <v-btn v-if="!settings.autoSave" :disabled="!unsavedChanges" :loading="loading" color="primary" @click="saveNote">Save</v-btn>
     </v-container>
   </v-container>
 </template>
 
-<script>
-import { Component, Vue } from "vue-property-decorator";
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
-import store from "@/store"
+import store from "@/store";
 
 @Component({
-  props: {
-    id: {
-      default: 1
-    }
-  },
   beforeRouteEnter(to, from, next) {
-    store.dispatch("fetchNotes");
     store.dispatch("fetchNote", to.params.id);
     next();
   },
-  beforeRouteLeave (to, from, next) {
-    if (!this.unsavedChanges) return next();
-    const answer = window.confirm("Do you really want to leave? You have unsaved changes!");
-    if (answer) return next();
-    next(false)
-  },
 })
-
 export default class Editor extends Vue {
+  @Prop() id: any;
+
   note = {
     title: "",
     text: "",
     favorite: false,
     deleted: false,
     id: 0,
-  }
+  };
   startingNote = { title: "", text: "", favorite: false };
   unsavedChanges = false;
   loading = false;
 
-  @Getter("getNoteById") getNoteById;
-  @Getter("getSettings") settings;
-  @Action("deleteNote") delNote;
+  @Getter("getNoteById") getNoteById: any;
+  @Getter("getSettings") settings: any;
+  @Action("deleteNote") delNote: any;
 
   deleteNote() {
     this.delNote(+this.id);
@@ -69,8 +53,8 @@ export default class Editor extends Vue {
   saveNote() {
     this.loading = true;
     const note = this.note;
-    const {id} = this.note;
-    store.dispatch("saveNote", {note, id}).then(() => {
+    const { id } = this.note;
+    store.dispatch("saveNote", { note, id }).then(() => {
       this.loading = false;
       this.unsavedChanges = false;
       this.startingNote.title = note.title;
@@ -87,12 +71,10 @@ export default class Editor extends Vue {
   setUnsavedChanges() {
     if (this.settings.autoSave) return this.saveNote();
 
-    this.unsavedChanges = this.note.title !== this.startingNote.title ||
-                          this.note.text !== this.startingNote.text ||
-                          this.note.favorite !== this.startingNote.favorite
+    this.unsavedChanges = this.note.title !== this.startingNote.title || this.note.text !== this.startingNote.text || this.note.favorite !== this.startingNote.favorite;
   }
 
-  created() {
+  mounted() {
     window.addEventListener("keydown", (e) => {
       if (e.key.toLowerCase() === "s" && e.ctrlKey === true) {
         e.preventDefault();
@@ -113,7 +95,7 @@ export default class Editor extends Vue {
       store.dispatch("addRecent", id);
     } catch (err) {
       this.$router.push("/not-found");
-      console.warn(err)
+      console.warn(err);
     }
   }
 }

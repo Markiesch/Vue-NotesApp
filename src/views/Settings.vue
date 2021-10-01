@@ -38,21 +38,19 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
-import store from "@/store"
+import store from "@/store";
 
-@Component({})
+@Component
 export default class Editor extends Vue {
   settings = store.getters.getSettings;
 
   saveSettings() {
-    localStorage.setItem("settings", JSON.stringify(this.settings))
+    localStorage.setItem("settings", JSON.stringify(this.settings));
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

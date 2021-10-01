@@ -4,17 +4,15 @@
       <h1>Recent Notes</h1>
       <v-row>
         <v-col v-for="note in recentNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
-          <v-hover v-slot="{ hover }">
-            <v-card :ripple="false" @contextmenu="show($event, note)" class="backgroundAccent" :class="{ 'backgroundAccent2': hover}" outlined>
-              <v-card-title>{{ note.title }}</v-card-title>
-              <v-card-subtitle>{{ note.text }}</v-card-subtitle>
-            </v-card>
-          </v-hover>
+          <v-card :ripple="false" @contextmenu="show($event, note)" class="backgroundAccent" outlined>
+            <v-card-title>{{ note.title }}</v-card-title>
+            <v-card-subtitle>{{ note.text }}</v-card-subtitle>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-container v-if="favoriteNotes.length  && settings.showFavorites">
+    <v-container v-if="favoriteNotes.length && settings.showFavorites">
       <h1>Favorite Notes</h1>
       <v-row>
         <v-col v-for="note in favoriteNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
@@ -27,23 +25,20 @@
     </v-container>
 
     <v-container class="mt-6">
-      <v-badge :content="note.notes.length">
+      <v-badge :content="notes.length">
         <h1 class="primaryText">All notes</h1>
       </v-badge>
-      <p v-if="note.length < 1">It looks like you do not have any files yet!</p>
+      <p v-if="notes.length < 1">It looks like you do not have any files yet!</p>
       <v-row>
-        <v-col v-for="note in note.notes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
-          <v-hover v-slot="{ hover }">
-            <v-card @contextmenu="show($event, note)" class="backgroundAccent" :class="{ 'backgroundAccent2': hover}" outlined>
-              <v-card-title>{{ note.title }}</v-card-title>
-              <v-card-subtitle>{{ note.text }}</v-card-subtitle>
-            </v-card>
-          </v-hover>
+        <v-col v-for="note in notes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
+          <v-card @contextmenu="show($event, note)" class="backgroundAccent" outlined>
+            <v-card-title>{{ note.title }}</v-card-title>
+            <v-card-subtitle>{{ note.text }}</v-card-subtitle>
+          </v-card>
         </v-col>
         <v-col lg="3" class="pointer" @click="createNote">
           <v-card outlined>
-            <v-card-title>
-              <v-icon>mdi-plus</v-icon>Create a new Note</v-card-title>
+            <v-card-title> <v-icon>mdi-plus</v-icon>Create a new Note</v-card-title>
             <v-card-subtitle>Click to create a new note</v-card-subtitle>
           </v-card>
         </v-col>
@@ -81,21 +76,13 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { State, Getter, Action } from "vuex-class";
-import store from "@/store"
+import { Getter, Action } from "vuex-class";
+import store from "@/store";
+import { Note } from "@/store/utils";
 
-@Component({
-  components: {},
-  beforeRouteEnter(to, from, next) {
-    store.dispatch("getRecentNotes");
-    store.dispatch("fetchNotes").then(() => {
-      next()
-    });
-  },
-})
-
+@Component
 export default class Home extends Vue {
   showMenu = false;
   x = 0;
@@ -108,35 +95,35 @@ export default class Home extends Vue {
     id: 1,
   };
 
-  @Getter("getRecentNotes") recentNotes;
-  @Getter("getFavoriteNotes") favoriteNotes;
-  @Getter("getSettings") settings;
-  @State("note") note;
-  @Action("createNote") createNote;
+  @Getter("getNotes") notes!: Note[];
+  @Getter("getRecentNotes") recentNotes: any;
+  @Getter("getFavoriteNotes") favoriteNotes: any;
+  @Getter("getSettings") settings: any;
+  @Action("createNote") createNote: any;
 
-  openNote(note) {
+  openNote(note: any) {
     this.$router.push("edit/" + note);
   }
 
-  show(event, note) {
+  show(event: any, note: any) {
     event.preventDefault();
     this.clickedNote = note;
     this.showMenu = false;
     this.x = event.clientX;
     this.y = event.clientY;
-    this.$nextTick(() => this.showMenu = true);
+    this.$nextTick(() => (this.showMenu = true));
   }
 
   toggleFavorite() {
     const note = this.clickedNote;
     const { id } = note;
     this.clickedNote.favorite = !note.favorite;
-    store.dispatch("saveNote", { note, id })
+    store.dispatch("saveNote", { note, id });
   }
 
   deleteNote() {
     const { id } = this.clickedNote;
-    store.dispatch("deleteNote", id)
+    store.dispatch("deleteNote", id);
   }
-};
+}
 </script>
