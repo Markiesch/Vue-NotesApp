@@ -1,9 +1,8 @@
 <template>
   <v-app>
-    <v-navigation-drawer class="nav fill-height" fixed app v-model="drawer">
-      <Navigation />
-    </v-navigation-drawer>
-    <v-main class="background">
+      <Navigation v-if="!$vuetify.breakpoint.mobile" />
+    <MobileNavigation v-else />
+    <v-main>
       <transition name="fade" mode="out-in">
         <router-view />
       </transition>
@@ -14,15 +13,17 @@
 <script lang="ts">
 import Vue from "vue";
 import Navigation from "@/components/Navigation.vue";
+import MobileNavigation from "@/components/MobileNavigation.vue";
 import Component from "vue-class-component";
 
 @Component({
   components: {
     Navigation,
+    MobileNavigation,
   },
 })
 export default class App extends Vue {
-  drawer = true;
+  drawer = false;
 }
 </script>
 
