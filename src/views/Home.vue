@@ -19,9 +19,7 @@
     </v-container>
 
     <v-container class="mt-6">
-      <v-badge :content="notes.length">
-        <h1 class="primaryText">All notes</h1>
-      </v-badge>
+      <h1 class="primaryText">All notes</h1>
       <p v-if="notes.length < 1">It looks like you do not have any files yet!</p>
       <v-row>
         <v-col v-for="note in notes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
@@ -72,12 +70,12 @@ import { Component, Vue } from "vue-property-decorator";
 import { Getter, Action } from "vuex-class";
 import store from "@/store";
 import { Note } from "@/store/utils";
-import Card from "../components/Card.vue"
+import Card from "../components/Card.vue";
 
 @Component({
   components: {
-    Card
-  }
+    Card,
+  },
 })
 export default class Home extends Vue {
   showMenu = false;
@@ -129,8 +127,6 @@ export default class Home extends Vue {
   max-height: 150px;
   overflow-y: scroll;
 }
-
-
 
 /* width */
 .card::-webkit-scrollbar {
