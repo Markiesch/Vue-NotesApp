@@ -38,7 +38,7 @@ export default class Home extends Vue {
 
 .subtitle {
   font-size: 14px !important;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .subtitle * {
@@ -46,7 +46,7 @@ export default class Home extends Vue {
   font-weight: 400;
   background: none !important;
   padding: 0;
-  margin: 0;
+  margin: 0 !important;
   line-height: 1.1;
 }
 </style>
