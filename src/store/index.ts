@@ -7,13 +7,11 @@ Vue.use(Vuex);
 
 const notes = JSON.parse(localStorage.getItem("notes") || "[]");
 const settings = JSON.parse(localStorage.getItem("settings")!) || defaultSettings;
-const recentNotes = JSON.parse(localStorage.getItem("recentNotes") || "[]");
 
 export default new Vuex.Store({
   plugins: [saveStatePlugin],
   state: {
     notes,
-    recentNotes,
     note: {},
     settings,
   },
@@ -23,9 +21,6 @@ export default new Vuex.Store({
     },
     SET_NOTE(state: State, note: any) {
       state.note = note;
-    },
-    SET_RECENT(state: State, recentNotes: any) {
-      state.recentNotes = recentNotes;
     },
   },
   actions: {
@@ -43,14 +38,6 @@ export default new Vuex.Store({
 
       // Send user to editor page with created note
       router.push({ name: "Editor", params: { id: id + "" } });
-    },
-
-    addRecent({ commit }: any, id: number) {
-      let recentNotes = JSON.parse(localStorage.getItem("recentNotes") || "[]");
-      const index = recentNotes.indexOf(id);
-      if (index > -1) recentNotes.splice(index, 1);
-      recentNotes.push(id);
-      commit("SET_RECENT", recentNotes);
     },
 
     fetchNote({ commit, getters }: any, id: number) {
@@ -77,36 +64,13 @@ export default new Vuex.Store({
       }
 
       commit("SET_NOTES", savedNotes);
-      dispatch("fixRecentNotes");
       if ((router as any).history.current.name !== "Dashboard") router.push({ name: "Dashboard" });
-    },
-
-    fixRecentNotes() {
-      let recentNotes = JSON.parse(localStorage.getItem("recentNotes") || "[]");
-      if (recentNotes.length < 1) return;
-      const savedNotes = JSON.parse(localStorage.getItem("notes") || "[]");
-      let savedNotesId = [];
-      for (const savedNote of savedNotes) savedNotesId.push(savedNote.id);
-
-      if (savedNotes.length < 1) recentNotes = [];
-
-      for (let i = 0; i < recentNotes.length; i++) {
-        const recentNote = recentNotes[i];
-        // @ts-ignore
-        if (!savedNotesId.includes(recentNote)) recentNotes.splice(i, 1);
-      }
     },
   },
   getters: {
     getNotes: (state: State): Note[] => state.notes,
     getCurrentNote: (state: State) => state.note,
     getNoteById: (state: State) => (id: number) => state.notes.find((note: any) => note.id === id),
-    getRecentNotes(state: State) {
-      const recentNotesIds = state.recentNotes;
-      let recentNotes = [];
-      for (const note of state.notes) if (recentNotesIds.includes(note.id)) recentNotes.push(note);
-      return recentNotes;
-    },
     getFavoriteNotes: (state: State) => state.notes.filter((note: any) => note.favorite),
     getSettings: (state: State) => state.settings,
   },

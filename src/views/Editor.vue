@@ -1,22 +1,22 @@
 <template>
   <v-container>
-    <v-toolbar v-if="editor" flat fixed>
-      <v-btn @click="editor.chain().toggleBold().run()" :color="editor.isActive('bold') ? 'primary' : ''" icon><v-icon>mdi-format-bold</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleItalic().run()" :color="editor.isActive('italic') ? 'primary' : ''" icon><v-icon>mdi-format-italic</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleStrike().run()" :color="editor.isActive('strike') ? 'primary' : ''" icon><v-icon>mdi-format-strikethrough</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleCode().run()" :color="editor.isActive('code') ? 'primary' : ''" icon><v-icon>mdi-code-tags</v-icon></v-btn>
-      <v-btn @click="editor.chain().unsetAllMarks().run()" icon><v-icon>mdi-eraser-variant</v-icon></v-btn>
-      <v-btn @click="editor.chain().setParagraph().run()" :color="editor.isActive('paragraph') ? 'primary' : ''" icon><v-icon>mdi-format-paragraph</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleHeading({ level: 1 }).run()"  :color="editor.isActive('heading', { level: 1 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-1</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleHeading({ level: 2 }).run()"  :color="editor.isActive('heading', { level: 2 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-2</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleHeading({ level: 3 }).run()"  :color="editor.isActive('heading', { level: 3 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-3</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleHeading({ level: 4 }).run()"  :color="editor.isActive('heading', { level: 4 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-4</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleHeading({ level: 5 }).run()"  :color="editor.isActive('heading', { level: 5 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-5</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleHeading({ level: 6 }).run()"  :color="editor.isActive('heading', { level: 6 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-6</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleBulletList().run()" :color="editor.isActive('bulletList') ? 'primary' : ''" icon><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleOrderedList().run()" :color="editor.isActive('orderedList') ? 'primary' : ''" icon><v-icon>mdi-format-list-numbered</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleCodeBlock().run()" :color="editor.isActive('codeBlock') ? 'primary' : ''" icon><v-icon>mdi-file-code-outline</v-icon></v-btn>
-      <v-btn @click="editor.chain().toggleBlockquote().run()" :color="editor.isActive('blockQuote') ? 'primary' : ''" icon><v-icon>mdi-format-quote-close</v-icon></v-btn>
+    <v-toolbar v-if="editor" elevation="1" dense fixed>
+      <v-btn @click="editor.chain().focus().toggleBold().run()" :color="editor.isActive('bold') ? 'primary' : ''" icon><v-icon>mdi-format-bold</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleItalic().run()" :color="editor.isActive('italic') ? 'primary' : ''" icon><v-icon>mdi-format-italic</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleStrike().run()" :color="editor.isActive('strike') ? 'primary' : ''" icon><v-icon>mdi-format-strikethrough</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleCode().run()" :color="editor.isActive('code') ? 'primary' : ''" icon><v-icon>mdi-code-tags</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().unsetAllMarks().run()" icon><v-icon>mdi-eraser-variant</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().setParagraph().run()" :color="editor.isActive('paragraph') ? 'primary' : ''" icon><v-icon>mdi-format-paragraph</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"  :color="editor.isActive('heading', { level: 1 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-1</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"  :color="editor.isActive('heading', { level: 2 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-2</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"  :color="editor.isActive('heading', { level: 3 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-3</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleHeading({ level: 4 }).run()"  :color="editor.isActive('heading', { level: 4 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-4</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleHeading({ level: 5 }).run()"  :color="editor.isActive('heading', { level: 5 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-5</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleHeading({ level: 6 }).run()"  :color="editor.isActive('heading', { level: 6 }) ? 'primary' : ''" icon><v-icon>mdi-format-header-6</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleBulletList().run()" :color="editor.isActive('bulletList') ? 'primary' : ''" icon><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleOrderedList().run()" :color="editor.isActive('orderedList') ? 'primary' : ''" icon><v-icon>mdi-format-list-numbered</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleCodeBlock().run()" :color="editor.isActive('codeBlock') ? 'primary' : ''" icon><v-icon>mdi-file-code-outline</v-icon></v-btn>
+      <v-btn @click="editor.chain().focus().toggleBlockquote().run()" :color="editor.isActive('blockQuote') ? 'primary' : ''" icon><v-icon>mdi-format-quote-close</v-icon></v-btn>
       <v-spacer></v-spacer>
       <v-btn @click="deleteNote" icon>
         <v-icon>mdi-trash-can</v-icon>
@@ -105,21 +105,14 @@ export default class VueEditor extends Vue {
       }
     });
 
-    try {
-      const id = parseInt(this.id);
-      const note = this.getNoteById(id);
-      if (!note) return;
-      this.note = note;
-      // Workaround to make "StartingNote" not reactive
-      this.startingNote.title = note.title;
-      this.startingNote.text = note.text;
-      this.startingNote.favorite = note.favorite;
-
-      store.dispatch("addRecent", id);
-    } catch (err) {
-      this.$router.push("/not-found");
-      console.warn(err);
-    }
+    const id = parseInt(this.id);
+    const note = this.getNoteById(id);
+    if (!note) return;
+    this.note = note;
+    // Workaround to make "StartingNote" not reactive
+    this.startingNote.title = note.title;
+    this.startingNote.text = note.text;
+    this.startingNote.favorite = note.favorite;
 
     this.editor = new Editor({
       content: this.note.text,
@@ -130,7 +123,7 @@ export default class VueEditor extends Vue {
       },
       editorProps: {
         attributes: {
-          class: "elevation-2 pa-3 mb-4 rounded",
+          class: "elevation-1 pa-3 mb-4 rounded",
         },
       },
     });

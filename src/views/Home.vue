@@ -1,14 +1,5 @@
 <template>
   <v-container color="primary">
-    <v-container v-if="recentNotes.length && settings.showRecents">
-      <h1>Recent Notes</h1>
-      <v-row>
-        <v-col v-for="note in recentNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
-          <Card :note="note" :context="show"></Card>
-        </v-col>
-      </v-row>
-    </v-container>
-
     <v-container v-if="favoriteNotes.length && settings.showFavorites">
       <h1>Favorite Notes</h1>
       <v-row>
@@ -90,7 +81,6 @@ export default class Home extends Vue {
   };
 
   @Getter("getNotes") notes!: Note[];
-  @Getter("getRecentNotes") recentNotes: any;
   @Getter("getFavoriteNotes") favoriteNotes: any;
   @Getter("getSettings") settings: any;
   @Action("createNote") createNote: any;
@@ -121,30 +111,3 @@ export default class Home extends Vue {
   }
 }
 </script>
-
-<style scoped>
-.card {
-  max-height: 150px;
-  overflow-y: scroll;
-}
-
-/* width */
-.card::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-.card::-webkit-scrollbar-track {
-  background: #fbfbfb;
-}
-
-/* Handle */
-.card::-webkit-scrollbar-thumb {
-  background: #eeeeee;
-}
-
-/* Handle on hover */
-.card::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-</style>

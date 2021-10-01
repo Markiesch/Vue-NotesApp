@@ -1,13 +1,12 @@
 export function saveStatePlugin(store: any) {
   store.subscribe((mutation: any, state: State) => {
     localStorage.setItem("notes", JSON.stringify(state.notes));
-    localStorage.setItem("recentNotes", JSON.stringify(state.recentNotes));
+    localStorage.setItem("settings", JSON.stringify(state.settings));
   });
 }
 
 export interface State {
   notes: Note[];
-  recentNotes: any;
   note: Note | {};
   settings: any;
 }
