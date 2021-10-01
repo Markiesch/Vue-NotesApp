@@ -3,7 +3,7 @@
     <v-container v-if="favoriteNotes.length && settings.showFavorites">
       <h1>Favorite Notes</h1>
       <v-row>
-        <v-col v-for="note in favoriteNotes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
+        <v-col v-for="note in favoriteNotes" :key="note.id" class="pointer" @click="openNote(note.id)" lg="3" sm="12" cols="12">
           <Card :note="note" :context="show"></Card>
         </v-col>
       </v-row>
@@ -13,7 +13,7 @@
       <h1 class="primaryText">All notes</h1>
       <p v-if="notes.length < 1">It looks like you do not have any files yet!</p>
       <v-row>
-        <v-col v-for="note in notes" :key="note.id" lg="3" class="pointer" @click="openNote(note.id)">
+        <v-col v-for="note in notes" :key="note.id" class="pointer" @click="openNote(note.id)" lg="3" sm="12" cols="12">
           <Card :note="note" :context="show"></Card>
         </v-col>
         <v-col lg="3" class="pointer" @click="createNote">
