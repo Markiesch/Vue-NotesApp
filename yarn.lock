@@ -8520,11 +8520,6 @@ vuex-class@^0.3.2:
   resolved "https://registry.yarnpkg.com/vuex-class/-/vuex-class-0.3.2.tgz#c7e96a076c1682137d4d23a8dcfdc63f220e17a8"
   integrity sha512-m0w7/FMsNcwJgunJeM+wcNaHzK2KX1K1rw2WUQf7Q16ndXHo7pflRyOV/E8795JO/7fstyjH3EgqBI4h4n4qXQ==
 
-vuex-crud@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/vuex-crud/-/vuex-crud-0.3.2.tgz#599c0887b639bdf9f869fa27fe017e894dff8ee2"
-  integrity sha512-w7MUrpjCvrjdUMvUydr1al7OkatO8k5Z6eWVaQgy4S+cDBBQGiOVVw/iVuvRJDgFD3u42D6nP3yutVdi+xQfPg==
-
 vuex@^3.4.0:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.6.2.tgz#236bc086a870c3ae79946f107f16de59d5895e71"
