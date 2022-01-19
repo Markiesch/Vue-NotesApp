@@ -3,7 +3,6 @@
     <template v-for="(item, index) in items">
       <v-btn :key="index" icon :to="item.route">
         <span>{{ item.text }}</span>
-
         <v-icon>{{ item.icon }}</v-icon>
       </v-btn>
     </template>

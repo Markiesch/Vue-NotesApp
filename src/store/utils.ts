@@ -1,5 +1,5 @@
 export function saveStatePlugin(store: any) {
-  store.subscribe((mutation: any, state: State) => {
+  store.subscribe((_: any, state: State) => {
     localStorage.setItem("notes", JSON.stringify(state.notes));
     localStorage.setItem("settings", JSON.stringify(state.settings));
   });

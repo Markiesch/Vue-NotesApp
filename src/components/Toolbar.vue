@@ -18,7 +18,7 @@
       <v-btn icon @click="editor.chain().focus().toggleCodeBlock().run()" :color="editor.isActive('codeBlock') ? 'primary' : ''"><v-icon>mdi-file-code-outline</v-icon></v-btn>
       <v-btn icon @click="editor.chain().focus().toggleBlockquote().run()" :color="editor.isActive('blockQuote') ? 'primary' : ''"><v-icon>mdi-format-quote-close</v-icon></v-btn>
     </div>
-    <div>
+    <div v-if="note">
       <v-btn icon @click="deleteNote(+note.id)"><v-icon>mdi-trash-can</v-icon></v-btn>
       <v-btn icon :color="note.favorite ? 'error' : ''" @click="toggleFavorite"><v-icon>{{ note.favorite ? "mdi-heart" : "mdi-heart-plus" }}</v-icon></v-btn>
     </div>
@@ -35,7 +35,7 @@ import { Action } from "vuex-class";
 @Component
 export default class VueEditor extends Vue {
     @Action("deleteNote") deleteNote!: (id: number) => void;
-    @Prop() editor!: Editor | null;
+    @Prop() editor!: Editor;
     @Prop() note!: Note;
     @Prop() setUnsavedChanges!: () => void;
 

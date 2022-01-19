@@ -10,12 +10,12 @@
 </template>
 
 <script lang="ts">
+import store from "@/store";
+import StarterKit from "@tiptap/starter-kit";
+import { Editor, EditorContent } from "@tiptap/vue-2";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import { Editor, EditorContent } from "@tiptap/vue-2";
 import Toolbar from "../components/Toolbar.vue";
-import StarterKit from "@tiptap/starter-kit";
-import store from "@/store";
 
 @Component({
   components: {
@@ -30,13 +30,7 @@ import store from "@/store";
 export default class VueEditor extends Vue {
   @Prop() id: any;
 
-  note = {
-    title: "",
-    text: "",
-    favorite: false,
-    deleted: false,
-    id: 0,
-  };
+  note = { title: "", text: "", favorite: false, deleted: false, id: 0 };
   startingNote = { title: "", text: "", favorite: false };
   unsavedChanges = false;
   editor: Editor | null = null;

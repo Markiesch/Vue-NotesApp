@@ -1,6 +1,6 @@
 <template>
   <v-app>
-      <Navigation v-if="!$vuetify.breakpoint.mobile" />
+    <Navigation v-if="!$vuetify.breakpoint.mobile" />
     <MobileNavigation v-else />
     <v-main>
       <transition name="fade" mode="out-in">
