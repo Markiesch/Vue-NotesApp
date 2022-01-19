@@ -10,12 +10,3 @@
     ·
     <a href="https://github.com/Markiesch/Vue-NotesApp/issues">Request Feature</a>
 </div>
-
-<br />
-<br />
-
-### TODO
-
-1. Fix UX/UI issues
-2. Don't show note count when empty
-3. Light/dark mode
