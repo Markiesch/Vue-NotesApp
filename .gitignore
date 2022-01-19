@@ -1,14 +1,1 @@
-/.idea
-/ontwikkel
 node_modules
-dist
-
-# local env files
-.env.local
-.env.*.local
-
-# Excluded Files
-package-lock.json
-yarn.lock
-babel.config.js
-.browserslistrc
